@@ -25,12 +25,18 @@ Route::group([
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::apiResources([
-        'permission' => 'API\PermissionController',
-        'role' => 'API\RoleController',
-        'user' => 'API\UserController',
-        'bitacora' => 'API\BitacoraController',
-        'tiposervicio' => 'API\TipoServicioController'
+        'permission'         => 'API\PermissionController',
+        'role'               => 'API\RoleController',
+        'user'               => 'API\UserController',
+        'bitacora'           => 'API\BitacoraController',
+        'tiposervicio'       => 'API\TipoServicioController',
+        'tipodocumento'      => 'API\TipoDocumentoController',
+        'tipohabitacion'     => 'API\TipoHabitacionController',
+        'estados'            => 'API\EstadosController',
+        'tipoidentificacion' => 'API\TipoIdentificacionController',
+        'tipoaccion'         => 'API\TipoAccionController',
     ]);
+
     Route::get('permission2', 'API\PermissionController@indexPermissions');
     Route::get('permissionsrole/{id}', 'API\RoleController@permissions');
     Route::get('permissionsmodel/{id}', 'API\PermissionController@permissionsmodel');
@@ -47,3 +53,10 @@ Route::fallback(function(){
     return response()->json([
         'message' => 'Page Not Found.'], 404);
 });
+
+
+Route::get('students', 'TipoServicioController@index');
+Route::get('students/{id}', 'TipoServicioController@show');
+Route::post('students', 'TipoServicioController@store');
+Route::put('students/{id}', 'TipoServicioController@update');
+Route::delete('students/{id}','TipoServicioController@delete');

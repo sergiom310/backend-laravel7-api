@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\TipoServicio;
+use App\Models\TipoIdentificacion;
 use Illuminate\Http\Request;
 
-class TipoServicioController extends Controller
+class TipoIdentificacionController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,13 +31,13 @@ class TipoServicioController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoServicio = TipoServicio::paginate($limit);
+            $TipoIdentificacion = TipoIdentificacion::paginate($limit);
         } else {
-            $TipoServicio = TipoServicio::all();
+            $TipoIdentificacion = TipoIdentificacion::all();
         }
 
         return response()->json([
-            "data" => $TipoServicio
+            "data" => $TipoIdentificacion
         ], 200);
     }
 
@@ -50,18 +50,21 @@ class TipoServicioController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'tipo_identificacion.required'     => 'El tipo de identificación es requerida.',
+            'tipo_identificacion.max'          => 'El tipo de identificación debe ser máximo 5 caracteres.',
+            'des_tipo_identificacion.required' => 'La descripción del tipo de identificación es requerida.',
+            'des_tipo_identificacion.max'      => 'La descripción del tipo de identificación debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'tipo_identificacion'     => 'required|max:5',
+            'des_tipo_identificacion' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoServicio = TipoServicio::create($request->all());
+            $TipoIdentificacion = TipoIdentificacion::create($request->all());
 
             return response()->json([
-                "data" => $TipoServicio
+                "data" => $TipoIdentificacion
             ], 201);
         }
 
@@ -71,15 +74,15 @@ class TipoServicioController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $TipoDefinicion = TipoServicio::whereId($id)->get();
+        $TipoIdentificacion = TipoIdentificacion::whereId($id)->get();
 
         return response()->json([
-            "data" => $TipoDefinicion
+            "data" => $TipoIdentificacion
         ], 200);
     }
 
@@ -87,23 +90,26 @@ class TipoServicioController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
 
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'tipo_identificacion.required'     => 'El tipo de identificación es requerida.',
+            'tipo_identificacion.max'          => 'El tipo de identificación debe ser máximo 5 caracteres.',
+            'des_tipo_identificacion.required' => 'La descripción del tipo de identificación es requerida.',
+            'des_tipo_identificacion.max'      => 'La descripción del tipo de identificación debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'tipo_identificacion'     => 'required|max:5',
+            'des_tipo_identificacion' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoDefinicion->update($request->all());
+            $TipoIdentificacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
@@ -113,14 +119,14 @@ class TipoServicioController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
 
-        $TipoDefinicion->delete();
+        $TipoIdentificacion->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

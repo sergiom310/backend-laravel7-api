@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\TipoServicio;
+use App\Models\TipoHabitacion;
 use Illuminate\Http\Request;
 
-class TipoServicioController extends Controller
+class TipoHabitacionController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,13 +31,13 @@ class TipoServicioController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoServicio = TipoServicio::paginate($limit);
+            $TipoHabitacion = TipoHabitacion::paginate($limit);
         } else {
-            $TipoServicio = TipoServicio::all();
+            $TipoHabitacion = TipoHabitacion::all();
         }
 
         return response()->json([
-            "data" => $TipoServicio
+            "data" => $TipoHabitacion
         ], 200);
     }
 
@@ -50,18 +50,18 @@ class TipoServicioController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'required' => 'La descripción del tipo de habitación es requerida.',
+            'max'      => 'La descripción del tipo de habitación debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'des_tipo_habitacion' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoServicio = TipoServicio::create($request->all());
+            $TipoHabitacion = TipoHabitacion::create($request->all());
 
             return response()->json([
-                "data" => $TipoServicio
+                "data" => $TipoHabitacion
             ], 201);
         }
 
@@ -71,15 +71,15 @@ class TipoServicioController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $TipoDefinicion = TipoServicio::whereId($id)->get();
+        $TipoHabitacion = TipoHabitacion::whereId($id)->get();
 
         return response()->json([
-            "data" => $TipoDefinicion
+            "data" => $TipoHabitacion
         ], 200);
     }
 
@@ -87,23 +87,23 @@ class TipoServicioController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoHabitacion = TipoHabitacion::findOrFail($id);
 
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'required' => 'La descripción del tipo de habitación es requerida.',
+            'max'      => 'La descripción del tipo de habitación debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'des_tipo_habitacion' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoDefinicion->update($request->all());
+            $TipoHabitacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
@@ -113,14 +113,14 @@ class TipoServicioController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoHabitacion = TipoHabitacion::findOrFail($id);
 
-        $TipoDefinicion->delete();
+        $TipoHabitacion->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

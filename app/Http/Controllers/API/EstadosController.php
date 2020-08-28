@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\TipoServicio;
+use App\Models\Estados;
 use Illuminate\Http\Request;
 
-class TipoServicioController extends Controller
+class EstadosController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -31,13 +31,13 @@ class TipoServicioController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoServicio = TipoServicio::paginate($limit);
+            $Estados = Estados::paginate($limit);
         } else {
-            $TipoServicio = TipoServicio::all();
+            $Estados = Estados::all();
         }
 
         return response()->json([
-            "data" => $TipoServicio
+            "data" => $Estados
         ], 200);
     }
 
@@ -50,18 +50,18 @@ class TipoServicioController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'required' => 'El nombre del estado es requerida.',
+            'max'      => 'El nombre del estado debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'nom_estado' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoServicio = TipoServicio::create($request->all());
+            $Estados = Estados::create($request->all());
 
             return response()->json([
-                "data" => $TipoServicio
+                "data" => $Estados
             ], 201);
         }
 
@@ -71,15 +71,15 @@ class TipoServicioController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  \App\Models\Estados  $Estados
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $TipoDefinicion = TipoServicio::whereId($id)->get();
+        $Estados = Estados::whereId($id)->get();
 
         return response()->json([
-            "data" => $TipoDefinicion
+            "data" => $Estados
         ], 200);
     }
 
@@ -87,23 +87,23 @@ class TipoServicioController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TipoServicio  $tipoServicio
+     * @param  \App\Models\Estados  $Estados
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $Estados = Estados::findOrFail($id);
 
         $messages = [
-            'required' => 'La descripción del tipo de servicio es requerida.',
-            'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+            'required' => 'La descripción del tipo de documento es requerida.',
+            'max'      => 'La descripción del tipo de documento debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
             'des_tipo_servicio' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoDefinicion->update($request->all());
+            $Estados->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
@@ -118,9 +118,9 @@ class TipoServicioController extends Controller
      */
     public function destroy($id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $Estados = Estados::findOrFail($id);
 
-        $TipoDefinicion->delete();
+        $Estados->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
