@@ -94,13 +94,20 @@ class TipoServicioController extends Controller
     {
         $TipoDefinicion = TipoServicio::findOrFail($id);
 
-        try {
+        $messages = [
+            'required' => 'La descripción del tipo de servicio es requerida.',
+            'max' => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+        ];
+        $validator = \Validator::make($request->all(), [
+            'des_tipo_servicio' => 'required|max:50'
+        ], $messages);
+
+        if ($validator->passes()) {
             $TipoDefinicion->update($request->all());
-        } catch (\Exception $exception) {
-            return response()->json(['error' => 'Error actualizando BD!'], 422);
+            return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
-        return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
+        return response()->json(['error' => 'Error actualizando BD!'], 422);
     }
 
     /**
