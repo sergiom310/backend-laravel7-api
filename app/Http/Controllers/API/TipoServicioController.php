@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\ConveniosTarifas;
+use App\Models\TipoServicio;
 use Illuminate\Http\Request;
-use App\Http\Requests\API\ConveniosTarifasRequest;
 
-class ConveniosTarifasController extends Controller
+class TipoServicioController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -32,13 +31,13 @@ class ConveniosTarifasController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $response = ConveniosTarifas::paginate($limit);
+            $TipoServicio = TipoServicio::paginate($limit);
         } else {
-            $response = ConveniosTarifas::all();
+            $TipoServicio = TipoServicio::all();
         }
 
         return response()->json([
-            "data" => $response
+            "data" => $TipoServicio
         ], 200);
     }
 
@@ -48,31 +47,39 @@ class ConveniosTarifasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ConveniosTarifasRequest $request)
+    public function store(Request $request)
     {
-        try {
-            $response = ConveniosTarifas::create($request->all());
-        } catch (\Exception $exception) {
-            return response()->json(['error' => 'Error creando el registro!'], 422);
+        $messages = [
+            'required' => 'La descripción del tipo de servicio es requerida.',
+            'max' => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
+        ];
+        $validator = \Validator::make($request->all(), [
+            'des_tipo_servicio' => 'required|max:50'
+        ], $messages);
+
+        if ($validator->passes()) {
+            $TipoServicio = TipoServicio::create($request->all());
+
+            return response()->json([
+                "data" => $TipoServicio
+            ], 201);
         }
 
-        return response()->json([
-            "data" => $response
-        ], 201);
+        return response()->json(['error' => $validator->errors()->all()], 422);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\TipoServicio  $tipoServicio
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $response = ConveniosTarifas::whereId($id)->get();
+        $TipoDefinicion = TipoServicio::whereId($id)->get();
 
         return response()->json([
-            "data" => $response
+            "data" => $TipoDefinicion
         ], 200);
     }
 
@@ -80,15 +87,15 @@ class ConveniosTarifasController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\TipoServicio  $tipoServicio
      * @return \Illuminate\Http\Response
      */
-    public function update(ConveniosTarifasRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $response = ConveniosTarifas::findOrFail($id);
+        $TipoDefinicion = TipoServicio::findOrFail($id);
 
         try {
-            $response->update($request->all());
+            $TipoDefinicion->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }
@@ -99,14 +106,14 @@ class ConveniosTarifasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clientes  $clientes
+     * @param  \App\Models\TipoServicio  $tipoServicio
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $response = ConveniosTarifas::findOrFail($id);
+        $TipoDefinicion = TipoServicio::findOrFail($id);
 
-        $response->delete();
+        $TipoDefinicion->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

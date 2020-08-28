@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ActividadesRequest extends FormRequest
+class BitacoraRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,15 +27,24 @@ class ActividadesRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'user_id' => 'required|numeric',
-            'tipo_accion_id' => 'required|numeric',
-            'fecha_actividad' => 'required|date',
-            'des_actividad' => 'sometimes|string',
-            'estado_id' => 'required|numeric',
-            'clase_actividad' => 'required|numeric',
-            'id_permiso_rol' => 'required|numeric'
-        ];
+        if ('POST' == $this->method) {        
+            return [
+                'tipo_accion_id' => 'required|numeric',
+                'tabla_id' => 'required|numeric',
+                'user_id' => 'required|numeric',
+                'nom_tabla' => 'required|string',
+                'obs_bitacora' => 'required|string'
+            ];
+        } else 
+        {
+            return [
+                'tipo_accion_id' => 'sometimes|numeric',
+                'tabla_id' => 'sometimes|numeric',
+                'user_id' => 'sometimes|numeric',
+                'nom_tabla' => 'sometimes|string',
+                'obs_bitacora' => 'sometimes|string'
+            ];
+        }
     }
 
      /**
@@ -46,18 +55,12 @@ class ActividadesRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'Id usuario es requerida',
-            'user_id.string' => 'Id usuario debe ser numerico.',
             'tipo_accion_id.required' => 'Id registro es requerida',
             'tipo_accion_id.numeric' => 'Id registro debe ser numerico.',
-            'fecha_actividad.required' => 'Fecha actividad es requerida',
-            'fecha_actividad.date' => 'Fecha actividad debe ser formato fecha',
-            'estado_id.required' => 'Id estado es requerida',
-            'estado_id.string' => 'Id estado debe ser numerico.',
-            'clase_actividad.required' => 'Clase actividad es requerida',
-            'clase_actividad.string' => 'Clase actividad debe ser numerico.',
-            'id_permiso_rol.required' => 'Id permiso es requerida',
-            'id_permiso_rol.string' => 'Id permiso debe ser numerico.',
+            'tabla_id.required' => 'Id estado es requerida',
+            'tabla_id.numeric' => 'Id estado debe ser numerico.',
+            'user_id.required' => 'Id usuario es requerida',
+            'user_id.numeric' => 'Id usuario debe ser numerico.'
         ];
     }
 

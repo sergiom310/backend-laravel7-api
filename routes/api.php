@@ -29,14 +29,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'role' => 'API\RoleController',
         'user' => 'API\UserController',
         'bitacora' => 'API\BitacoraController',
-        'tiposdefiniciones' => 'API\TiposDefinicionesController',
-        'definiciones' => 'API\DefinicionesController',
-        'clasesdocumentos' => 'API\ClasesDocumentosController',
-        'consecutivos' => 'API\ConsecutivosController',
-        'sedes' => 'API\SedesController',
-        'sedesusers' => 'API\SedesUsersController',
-        'convenios' => 'API\ConveniosController',
-        'administradoras' => 'API\AdministradorasController'
+        'tiposervicio' => 'API\TipoServicioController'
     ]);
     Route::get('permission2', 'API\PermissionController@indexPermissions');
     Route::get('permissionsrole/{id}', 'API\RoleController@permissions');

@@ -140,7 +140,6 @@ class CreateMoteappTables extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('nom_tabla', 50);
             $table->longtext('obs_bitacora');
-            $table->timestamp('fecha')->useCurrent();
             $table->timestamps();
         });
 

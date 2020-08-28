@@ -5,9 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Bitacora;
 use Illuminate\Http\Request;
-use App\Http\Requests\API\ActividadesRequest;
+use App\Http\Requests\API\BitacoraRequest;
+use Carbon\Carbon;
 
-class ActividadesController extends Controller
+class BitacoraController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -48,9 +49,10 @@ class ActividadesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ActividadesRequest $request)
+    public function store(BitacoraRequest $request)
     {
         try {
+            $request['fecha'] = Carbon::now();
             $response = Bitacora::create($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error creando el registro!'], 422);
@@ -83,7 +85,7 @@ class ActividadesController extends Controller
      * @param  \App\Models\Bitacora  $bitacora
      * @return \Illuminate\Http\Response
      */
-    public function update(ActividadesRequest $request, $id)
+    public function update(BitacoraRequest $request, $id)
     {
         $response = Bitacora::findOrFail($id);
 
