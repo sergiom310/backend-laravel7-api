@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BitacoraRequest extends FormRequest
+class ClientesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,23 +27,11 @@ class BitacoraRequest extends FormRequest
      */
     public function rules()
     {
-        if ('POST' == $this->method) {        
-            return [
-                'tipo_accion_id' => 'required|numeric',
-                'tabla_id' => 'required|numeric',
-                'user_id' => 'required|numeric',
-                'nom_tabla' => 'required|string',
-                'obs_bitacora' => 'required|string'
-            ];
-        } else {
-            return [
-                'tipo_accion_id' => 'sometimes|numeric',
-                'tabla_id' => 'sometimes|numeric',
-                'user_id' => 'sometimes|numeric',
-                'nom_tabla' => 'sometimes|string',
-                'obs_bitacora' => 'sometimes|string'
-            ];
-        }
+        return [
+            'num_identificacion'              => 'required|string|max:20',
+            'nom_cliente'                     => 'required|string|max:50',
+            'tipo_identificacion_id'          => 'required|numeric|exists:tipo_identificacion,id',
+        ];
     }
 
      /**
@@ -54,12 +42,13 @@ class BitacoraRequest extends FormRequest
     public function messages()
     {
         return [
-            'tipo_accion_id.required' => 'Id registro es requerida',
-            'tipo_accion_id.numeric' => 'Id registro debe ser numerico.',
-            'tabla_id.required' => 'Id estado es requerida',
-            'tabla_id.numeric' => 'Id estado debe ser numerico.',
-            'user_id.required' => 'Id usuario es requerida',
-            'user_id.numeric' => 'Id usuario debe ser numerico.'
+            'num_identificacion.required'     => ':attribute es requerida.',
+            'num_identificacion.max'          => ':attribute debe ser de máximo 20 carácteres.',
+            'nom_cliente.required'            => ':attribute es requerida.',
+            'nom_cliente.max'                 => ':attribute debe ser de máximo 50 carácteres.',
+            'tipo_identificacion_id.required' => ':attribute es requerida.',
+            'tipo_identificacion_id.numeric'  => ':attribute debe ser númerico.',
+            'tipo_identificacion_id.exists'   => ':attribute seleccionado no existe.',
         ];
     }
 

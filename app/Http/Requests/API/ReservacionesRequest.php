@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BitacoraRequest extends FormRequest
+class ReservacionesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,23 +27,13 @@ class BitacoraRequest extends FormRequest
      */
     public function rules()
     {
-        if ('POST' == $this->method) {        
-            return [
-                'tipo_accion_id' => 'required|numeric',
-                'tabla_id' => 'required|numeric',
-                'user_id' => 'required|numeric',
-                'nom_tabla' => 'required|string',
-                'obs_bitacora' => 'required|string'
-            ];
-        } else {
-            return [
-                'tipo_accion_id' => 'sometimes|numeric',
-                'tabla_id' => 'sometimes|numeric',
-                'user_id' => 'sometimes|numeric',
-                'nom_tabla' => 'sometimes|string',
-                'obs_bitacora' => 'sometimes|string'
-            ];
-        }
+        return [
+            'check_in'      => 'required|date',
+            'check_out'     => 'required|date',
+            'id_cliente'    => 'required|numeric|exists:clientes,id',
+            'id_habitacion' => 'required|numeric|exists:habitaciones,id',
+            'id_estado'     => 'required|numeric|exists:estados,id',
+        ];
     }
 
      /**
@@ -54,12 +44,14 @@ class BitacoraRequest extends FormRequest
     public function messages()
     {
         return [
-            'tipo_accion_id.required' => 'Id registro es requerida',
-            'tipo_accion_id.numeric' => 'Id registro debe ser numerico.',
-            'tabla_id.required' => 'Id estado es requerida',
-            'tabla_id.numeric' => 'Id estado debe ser numerico.',
-            'user_id.required' => 'Id usuario es requerida',
-            'user_id.numeric' => 'Id usuario debe ser numerico.'
+            'check_in.required'           => ':attribute es requerida.',
+            'check_in.required'           => ':attribute es requerida.',
+            'id_cliente.required'         => ':attribute es requerida.',
+            'id_cliente.numeric'          => ':attribute debe ser númerico.',
+            'id_cliente.exists'           => ':attribute seleccionado no existe.',
+            'tipo_habitacion_id.required' => ':attribute es requerida.',
+            'tipo_habitacion_id.numeric'  => ':attribute debe ser númerico.',
+            'tipo_habitacion_id.exists'   => ':attribute seleccionado no existe.',
         ];
     }
 

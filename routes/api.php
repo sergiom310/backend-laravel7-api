@@ -18,16 +18,16 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'password'
 ], function () {    
-    Route::post('create', 'PasswordResetController@create');
-    Route::get('find/{token}', 'PasswordResetController@find');
-    Route::post('reset', 'PasswordResetController@reset');
+    Route::post('create', 'ResetPasswordController@create');
+    Route::get('find/{token}', 'ResetPasswordController@find');
+    Route::post('reset', 'ResetPasswordController@reset');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::apiResources([
-        'permission'         => 'API\PermissionController',
-        'role'               => 'API\RoleController',
-        'user'               => 'API\UserController',
+        // 'permission'         => 'API\PermissionController',
+        // 'role'               => 'API\RoleController',
+        // 'user'               => 'API\UserController',
         'bitacora'           => 'API\BitacoraController',
         'tiposervicio'       => 'API\TipoServicioController',
         'tipodocumento'      => 'API\TipoDocumentoController',
@@ -38,28 +38,24 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'turnostrabajos'     => 'API\TurnosTrabajosController',
         'movimientos'        => 'API\MovimientosController',
         'documentos'         => 'API\DocumentosController',
+        'habitaciones'       => 'API\HabitacionesController',
+        'servicios'          => 'API\ServiciosController',
+        'reservaciones'      => 'API\ReservacionesController',
+        'clientes'           => 'API\ClientesController',
     ]);
 
-    Route::get('permission2', 'API\PermissionController@indexPermissions');
-    Route::get('permissionsrole/{id}', 'API\RoleController@permissions');
-    Route::get('permissionsmodel/{id}', 'API\PermissionController@permissionsmodel');
-    Route::put('permissionsmodel/{id}', 'API\PermissionController@updatepermissionsmodel');
+    // Route::get('permission2', 'API\PermissionController@indexPermissions');
+    // Route::get('permissionsrole/{id}', 'API\RoleController@permissions');
+    // Route::get('permissionsmodel/{id}', 'API\PermissionController@permissionsmodel');
+    // Route::put('permissionsmodel/{id}', 'API\PermissionController@updatepermissionsmodel');
 });
 
-Route::put('userstatus/{id}', 'API\UserController@activate');
-Route::get('roles', 'API\UserController@roles');
-Route::get('profile', 'API\UserController@profile');
-Route::put('profile', 'API\UserController@updateProfile');
-Route::get('findUser', 'API\UserController@search');
+// Route::put('userstatus/{id}', 'API\UserController@activate');
+// Route::get('roles', 'API\UserController@roles');
+// Route::get('profile', 'API\UserController@profile');
+// Route::put('profile', 'API\UserController@updateProfile');
+// Route::get('findUser', 'API\UserController@search');
 
 Route::fallback(function(){
-    return response()->json([
-        'message' => 'Page Not Found.'], 404);
+    return response()->json(['message' => 'Page Not Found.'], 404);
 });
-
-
-Route::get('students', 'TipoServicioController@index');
-Route::get('students/{id}', 'TipoServicioController@show');
-Route::post('students', 'TipoServicioController@store');
-Route::put('students/{id}', 'TipoServicioController@update');
-Route::delete('students/{id}','TipoServicioController@delete');

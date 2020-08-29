@@ -14,7 +14,7 @@ class TipoAccion extends Model
     protected $table = 'tipo_accion';
 
     protected $fillable = [
-        'des_tipo_servicio'
+        'des_tipo_accion'
     ];
    
     /**

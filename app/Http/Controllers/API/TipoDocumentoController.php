@@ -99,7 +99,7 @@ class TipoDocumentoController extends Controller
             'max'      => 'La descripción del tipo de documento debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'des_tipo_documento' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
