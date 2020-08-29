@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bitacora;
+use App\Models\TurnosTrabajos;
 use Illuminate\Http\Request;
-use App\Http\Requests\API\BitacoraRequest;
+use App\Http\Requests\API\TurnosTrabajosRequest;
 use Carbon\Carbon;
 
-class BitacoraController extends Controller
+class TurnosTrabajosController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -33,9 +33,9 @@ class BitacoraController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $response = Bitacora::paginate($limit);
+            $response = TurnosTrabajos::paginate($limit);
         } else {
-            $response = Bitacora::all();
+            $response = TurnosTrabajos::all();
         }
 
         return response()->json([
@@ -49,10 +49,11 @@ class BitacoraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BitacoraRequest $request)
+    public function store(TurnosTrabajosRequest $request)
     {
         try {
-            $response = Bitacora::create($request->all());
+            $request['fecha'] = Carbon::now();
+            $response = TurnosTrabajos::create($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error creando el registro!'], 422);
         }
@@ -65,12 +66,12 @@ class BitacoraController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Bitacora  $bitacora
+     * @param  \App\Models\TurnosTrabajos  $turnosTrabajos
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $response = Bitacora::whereId($id)->get();
+        $response = TurnosTrabajos::whereId($id)->get();
 
         return response()->json([
             "data" => $response
@@ -81,12 +82,12 @@ class BitacoraController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bitacora  $bitacora
+     * @param  \App\Models\TurnosTrabajos  $turnosTrabajos
      * @return \Illuminate\Http\Response
      */
-    public function update(BitacoraRequest $request, $id)
+    public function update(TurnosTrabajosRequest $request, $id)
     {
-        $response = Bitacora::findOrFail($id);
+        $response = TurnosTrabajos::findOrFail($id);
 
         try {
             $response->update($request->all());
@@ -100,12 +101,12 @@ class BitacoraController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Bitacora  $bitacora
+     * @param  \App\Models\TurnosTrabajos  $turnosTrabajos
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $response = Bitacora::findOrFail($id);
+        $response = TurnosTrabajos::findOrFail($id);
 
         $response->delete();
 

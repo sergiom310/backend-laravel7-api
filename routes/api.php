@@ -35,6 +35,9 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'estados'            => 'API\EstadosController',
         'tipoidentificacion' => 'API\TipoIdentificacionController',
         'tipoaccion'         => 'API\TipoAccionController',
+        'turnostrabajos'     => 'API\TurnosTrabajosController',
+        'movimientos'        => 'API\MovimientosController',
+        'documentos'         => 'API\DocumentosController',
     ]);
 
     Route::get('permission2', 'API\PermissionController@indexPermissions');
