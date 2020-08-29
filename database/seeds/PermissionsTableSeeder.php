@@ -113,6 +113,18 @@ class PermissionsTableSeeder extends Seeder
             'model_id' => 1
         ]);
 
+        DB::table('model_has_roles')->insert([
+            'role_id' => 1,
+            'model_type' => 'App\User',
+            'model_id' => 2
+        ]);
+
+        DB::table('model_has_roles')->insert([
+            'role_id' => 1,
+            'model_type' => 'App\User',
+            'model_id' => 3
+        ]);
+
         // * permisos de módulo admin *
         $role = Role::find(2);
         $role->syncPermissions([5,6,7,8,9,10,11,12]);
