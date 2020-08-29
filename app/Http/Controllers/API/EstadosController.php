@@ -99,7 +99,7 @@ class EstadosController extends Controller
             'max'      => 'El nombre del estado debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
-            'des_tipo_servicio' => 'required|max:50'
+            'nom_estado' => 'required|max:50'
         ], $messages);
 
         if ($validator->passes()) {
