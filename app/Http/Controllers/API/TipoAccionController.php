@@ -50,8 +50,8 @@ class TipoAccionController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => 'La descripción del tipo de documento es requerida.',
-            'max'      => 'La descripción del tipo de documento debe ser máximo 50 caracteres.'
+            'required' => 'La descripción del tipo de acción es requerida.',
+            'max'      => 'La descripción del tipo de acción debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
             'des_tipo_accion' => 'required|max:50'

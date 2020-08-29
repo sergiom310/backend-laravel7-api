@@ -8,7 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 
-class BitacoraRequest extends FormRequest
+class ServiciosRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,19 +29,15 @@ class BitacoraRequest extends FormRequest
     {
         if ('POST' == $this->method) {        
             return [
-                'tipo_accion_id' => 'required|numeric',
-                'tabla_id' => 'required|numeric',
-                'user_id' => 'required|numeric',
-                'nom_tabla' => 'required|string',
-                'obs_bitacora' => 'required|string'
+                'nom_servicio'     => 'required|max:50',
+                'tipo_servicio_id' => 'required|numeric|exists:tipo_servicio,id',
+                'habitacion_id'    => 'required|numeric|exists:habitaciones,id'
             ];
         } else {
             return [
-                'tipo_accion_id' => 'sometimes|numeric',
-                'tabla_id' => 'sometimes|numeric',
-                'user_id' => 'sometimes|numeric',
-                'nom_tabla' => 'sometimes|string',
-                'obs_bitacora' => 'sometimes|string'
+                'nom_servicio'     => 'required|max:50',
+                'tipo_servicio_id' => 'required|numeric|exists:tipo_servicio,id',
+                'habitacion_id'    => 'required|numeric|exists:habitaciones,id'
             ];
         }
     }
@@ -54,12 +50,14 @@ class BitacoraRequest extends FormRequest
     public function messages()
     {
         return [
-            'tipo_accion_id.required' => 'Id registro es requerida',
-            'tipo_accion_id.numeric' => 'Id registro debe ser numerico.',
-            'tabla_id.required' => 'Id estado es requerida',
-            'tabla_id.numeric' => 'Id estado debe ser numerico.',
-            'user_id.required' => 'Id usuario es requerida',
-            'user_id.numeric' => 'Id usuario debe ser numerico.'
+            'nom_servicio.required'     => ':attribute es requerido.',
+            'nom_servicio.max'          => ':attribute debe ser de máximo 50 carácteres.',
+            'tipo_servicio_id.required' => ':attribute es requerida.',
+            'tipo_servicio_id.numeric'  => ':attribute debe ser númerico.',
+            'tipo_servicio_id.exists'   => ':attribute seleccionado no existe.',
+            'habitacion_id.required'    => ':attribute es requerida.',
+            'habitacion_id.numeric'     => ':attribute debe ser númerico.',
+            'habitacion_id.exists'      => ':attribute seleccionado no existe.',
         ];
     }
 

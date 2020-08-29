@@ -93,7 +93,6 @@ class TipoServicioController extends Controller
     public function update(Request $request, $id)
     {
         $TipoDefinicion = TipoServicio::findOrFail($id);
-
         $messages = [
             'required' => 'La descripción del tipo de servicio es requerida.',
             'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
