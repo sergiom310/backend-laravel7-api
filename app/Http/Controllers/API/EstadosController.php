@@ -95,8 +95,8 @@ class EstadosController extends Controller
         $Estados = Estados::findOrFail($id);
 
         $messages = [
-            'required' => 'La descripción del tipo de documento es requerida.',
-            'max'      => 'La descripción del tipo de documento debe ser máximo 50 caracteres.'
+            'required' => 'El nombre del estado es requerida.',
+            'max'      => 'El nombre del estado debe ser máximo 50 caracteres.'
         ];
         $validator = \Validator::make($request->all(), [
             'des_tipo_servicio' => 'required|max:50'
