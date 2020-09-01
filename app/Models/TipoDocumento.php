@@ -14,9 +14,17 @@ class TipoDocumento extends Model
     protected $table = 'tipo_documento';
 
     protected $fillable = [
-        'des_tipo_documento'
+        'des_tipo_documento', 'estado_id'
     ];
    
+    /**
+     * Get the estado that owns the tipo_documento.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
+
     /**
      * Get the documentos for the tipo_documento.
      */

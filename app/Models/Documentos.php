@@ -19,7 +19,16 @@ class Documentos extends Model
         'turno_trabajo_id',
         'user_id_created_at',
         'user_id_updated_at',
+        'estado_id',
     ];
+
+    /**
+     * Get the estado that owns the documento.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
 
     /**
      * Get the tipo_documento that owns the documentos.

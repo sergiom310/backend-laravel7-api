@@ -14,9 +14,17 @@ class TipoHabitacion extends Model
     protected $table = 'tipo_habitacion';
 
     protected $fillable = [
-        'des_tipo_habitacion'
+        'des_tipo_habitacion', 'estado_id'
     ];
    
+    /**
+     * Get the estado that owns the tipo_habitacion.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
+
     /**
      * Get the habitaciones for the tipo_habitacion.
      */

@@ -17,7 +17,16 @@ class TipoIdentificacion extends Model
     protected $fillable = [
         'tipo_identificacion',
         'des_tipo_identificacion',
+        'estado_id'
     ];
+
+    /**
+     * Get the estado that owns the tipo_identificacion.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
 
     /**
      * Get the clientes for the tipo_identificacion.

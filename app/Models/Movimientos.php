@@ -17,7 +17,16 @@ class Movimientos extends Model
         'valor_servicio',
         'valor_total',
         'cantidad',
+        'estado_id'
     ];
+
+    /**
+     * Get the estado that owns the movimiento.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
 
     /**
      * Get the servicio that owns the movimiento.

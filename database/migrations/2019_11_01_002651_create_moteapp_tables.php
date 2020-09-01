@@ -13,27 +13,35 @@ class CreateMoteappTables extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_servicio', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->string('des_tipo_servicio', 50);
-            $table->timestamps();
-        });
-
         Schema::create('estados', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('nom_estado', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
+            $table->timestamps();
+        });
+
+        Schema::create('tipo_servicio', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->string('des_tipo_servicio', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
         Schema::create('tipo_habitacion', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('des_tipo_habitacion', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
         Schema::create('tipo_documento', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('des_tipo_documento', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
@@ -41,12 +49,16 @@ class CreateMoteappTables extends Migration
             $table->smallIncrements('id');
             $table->string('tipo_identificacion', 5);
             $table->string('des_tipo_identificacion', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
         Schema::create('tipo_accion', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('des_tipo_accion', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
@@ -56,6 +68,8 @@ class CreateMoteappTables extends Migration
             $table->foreign('tipo_identificacion_id')->references('id')->on('tipo_identificacion');
             $table->string('num_identificacion', 20);
             $table->string('nom_cliente', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
@@ -76,6 +90,8 @@ class CreateMoteappTables extends Migration
             $table->unsignedInteger('habitacion_id');
             $table->foreign('habitacion_id')->references('id')->on('habitaciones');
             $table->string('nom_servicio', 50);
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
@@ -116,6 +132,8 @@ class CreateMoteappTables extends Migration
             $table->foreign('user_id_created_at')->references('id')->on('users');
             $table->unsignedBigInteger('user_id_updated_at')->nullable();
             $table->foreign('user_id_updated_at')->references('id')->on('users');
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 
@@ -128,6 +146,8 @@ class CreateMoteappTables extends Migration
             $table->decimal('valor_servicio', 11, 2)->default(0.00);
             $table->decimal('valor_total', 11, 2)->default(0.00);        
             $table->unsignedSmallInteger('cantidad');
+            $table->unsignedSmallInteger('estado_id')->nullable()->default(2);
+            $table->foreign('estado_id')->references('id')->on('estados');
             $table->timestamps();
         });
 

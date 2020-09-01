@@ -14,6 +14,8 @@ class EstadosTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        
         DB::table('estados')->insert([
             'nom_estado' => "Sin Estado",
             'created_at' => Carbon::now()
@@ -73,5 +75,12 @@ class EstadosTableSeeder extends Seeder
             'nom_estado' => "Archivado",
             'created_at' => Carbon::now()
         ]);
+
+        DB::table('estados')->insert([
+            'nom_estado' => "Borrado físico",
+            'created_at' => Carbon::now()
+        ]);
+
+        DB::table('estados')->update(['estado_id' => 2]);
     }
 }

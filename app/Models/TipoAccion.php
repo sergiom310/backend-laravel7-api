@@ -14,9 +14,17 @@ class TipoAccion extends Model
     protected $table = 'tipo_accion';
 
     protected $fillable = [
-        'des_tipo_accion'
+        'des_tipo_accion', 'estado_id'
     ];
    
+    /**
+     * Get the estado that owns the tipo_accion.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
+
     /**
      * Get the bitacora for the tipo_accion.
      */

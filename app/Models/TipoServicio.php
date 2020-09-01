@@ -14,9 +14,17 @@ class TipoServicio extends Model
     protected $table = 'tipo_servicio';
 
     protected $fillable = [
-        'des_tipo_servicio'
+        'des_tipo_servicio', 'estado_id'
     ];
    
+    /**
+     * Get the estado that owns the tipo_servicio.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
+
     /**
      * Get the servicios for the tipo_servicio.
      */

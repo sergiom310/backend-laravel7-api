@@ -15,6 +15,7 @@ class Servicios extends Model
         'tipo_servicio_id',
         'habitacion_id',
         'nom_servicio',
+        'estado_id'
     ];
 
     /**
@@ -23,6 +24,14 @@ class Servicios extends Model
     public function tipoServicio()
     {
         return $this->belongsTo('App\Models\TipoServicio');
+    }
+
+    /**
+     * Get the estado that owns the servicio.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
     }
 
     /**

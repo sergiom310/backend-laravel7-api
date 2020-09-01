@@ -15,6 +15,7 @@ class Clientes extends Model
         'tipo_identificacion_id',
         'num_identificacion',
         'nom_cliente',
+        'estatus',
     ];
 
     /**

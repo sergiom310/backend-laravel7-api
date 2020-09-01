@@ -12,8 +12,16 @@ class Estados extends Model
      * @var array
      */
     protected $fillable = [
-        'nom_estado',
+        'nom_estado','estado_id'
     ];
+
+    /**
+     * Get the estado that owns the estado.
+     */
+    public function estado()
+    {
+        return $this->belongsTo('App\Models\Estados');
+    }
 
     /**
      * Get the habitacines for the estado.
