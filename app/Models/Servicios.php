@@ -15,7 +15,7 @@ class Servicios extends Model
         'tipo_servicio_id',
         'habitacion_id',
         'nom_servicio',
-        'estado_id'
+        'estatus'
     ];
 
     /**

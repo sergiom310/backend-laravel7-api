@@ -14,7 +14,7 @@ class Bitacora extends Model
     protected $table = 'bitacora';
 
     protected $fillable = [
-        'tipo_accion_id',
+        'estado_id',
         'tabla_id',
         'user_id',
         'nom_tabla',
@@ -31,11 +31,11 @@ class Bitacora extends Model
     }
 
     /**
-     * Get the tipo_accion that owns the bitacora.
+     * Get the estado that owns the bitacora.
      */
-    public function tipoAccion()
+    public function estado()
     {
-        return $this->belongsTo('App\Models\TipoAccion');
+        return $this->belongsTo('App\Models\Estados');
     }
 
 }

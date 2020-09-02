@@ -14,7 +14,7 @@ class TipoHabitacion extends Model
     protected $table = 'tipo_habitacion';
 
     protected $fillable = [
-        'des_tipo_habitacion', 'estado_id'
+        'des_tipo_habitacion', 'estatus'
     ];
    
     /**

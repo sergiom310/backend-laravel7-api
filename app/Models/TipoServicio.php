@@ -14,7 +14,7 @@ class TipoServicio extends Model
     protected $table = 'tipo_servicio';
 
     protected $fillable = [
-        'des_tipo_servicio', 'estado_id'
+        'des_tipo_servicio', 'estatus'
     ];
    
     /**

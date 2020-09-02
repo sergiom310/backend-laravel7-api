@@ -12,7 +12,7 @@ class TurnosTrabajos extends Model
      * @var array
      */
     protected $fillable = [
-        'estado_id',
+        'estatus',
         'nom_turno_trabajo',
         'hora_desde',
         'hora_hasta',

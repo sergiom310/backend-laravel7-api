@@ -17,7 +17,7 @@ class TipoIdentificacion extends Model
     protected $fillable = [
         'tipo_identificacion',
         'des_tipo_identificacion',
-        'estado_id'
+        'estatus'
     ];
 
     /**

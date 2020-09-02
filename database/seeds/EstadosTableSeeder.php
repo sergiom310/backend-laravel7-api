@@ -81,38 +81,32 @@ class EstadosTableSeeder extends Seeder
             'created_at' => Carbon::now()
         ]);
 
-        DB::table('estados')->update(['estado_id' => 2]);
+        DB::table('estados')->update(['estatus' => 2]);
 
         // * registros únicos de tablas *
 
-        DB::table('tipo_accion')->insert([
-            'des_tipo_accion' => "Sin acción",
-            'estado_id' => 1,
-            'created_at' => Carbon::now()
-        ]);
-
         DB::table('tipo_documento')->insert([
             'des_tipo_documento' => "Sin tipo documento",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
         DB::table('tipo_habitacion')->insert([
             'des_tipo_habitacion' => "Sin tipo habitación",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
         DB::table('tipo_identificacion')->insert([
             'tipo_identificacion' => "XX",
             'des_tipo_identificacion' => 'Sin detalle tipo identificación',
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
         DB::table('tipo_servicio')->insert([
             'des_tipo_servicio' => "Sin tipo servicio",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -120,14 +114,14 @@ class EstadosTableSeeder extends Seeder
             'tipo_identificacion_id' => 1,
             'num_identificacion' => 0,
             'nom_cliente' => "Sin cliente",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
         DB::table('habitaciones')->insert([
             'tipo_habitacion_id' => 1,
             'nom_habitacion' => "Sin habitación",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -135,7 +129,7 @@ class EstadosTableSeeder extends Seeder
             'tipo_servicio_id' => 1,
             'habitacion_id' => 1,
             'nom_servicio' => "Sin servicio",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -144,7 +138,7 @@ class EstadosTableSeeder extends Seeder
             'habitacion_id' => 1,
             'check_in' => Carbon::now(),
             'chech_out' => Carbon::now(),
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -152,7 +146,7 @@ class EstadosTableSeeder extends Seeder
             'nom_turno_trabajo' => "Sin turno de trabajo",
             'hora_desde' => "00:00",
             'hora_hasta' => "00:00",
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -164,7 +158,7 @@ class EstadosTableSeeder extends Seeder
             'user_id_updated_at' => 1,
             'impuestos' => 0,
             'valor_total' => 0,
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 
@@ -174,7 +168,7 @@ class EstadosTableSeeder extends Seeder
             'valor_servicio' => 0,
             'valor_total' => 0,
             'cantidad' => 0,
-            'estado_id' => 1,
+            'estatus' => 1,
             'created_at' => Carbon::now()
         ]);
 

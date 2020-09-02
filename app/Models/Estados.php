@@ -12,7 +12,7 @@ class Estados extends Model
      * @var array
      */
     protected $fillable = [
-        'nom_estado','estado_id'
+        'nom_estado','estatus'
     ];
 
     /**

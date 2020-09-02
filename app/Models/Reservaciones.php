@@ -14,7 +14,7 @@ class Reservaciones extends Model
     protected $fillable = [
         'cliente_id',
         'habitacion_id',
-        'estado_id',
+        'estatus',
         'check_in',
         'chech_out',
     ];

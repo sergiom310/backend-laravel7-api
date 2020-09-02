@@ -12,7 +12,7 @@ class Habitaciones extends Model
      * @var array
      */
     protected $fillable = [
-        'estado_id',
+        'estatus',
         'tipo_habitacion_id',
         'nom_habitacion',
     ];

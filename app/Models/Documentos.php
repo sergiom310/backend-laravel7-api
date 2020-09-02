@@ -19,7 +19,7 @@ class Documentos extends Model
         'turno_trabajo_id',
         'user_id_created_at',
         'user_id_updated_at',
-        'estado_id',
+        'estatus',
     ];
 
     /**

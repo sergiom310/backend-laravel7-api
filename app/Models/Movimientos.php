@@ -17,7 +17,7 @@ class Movimientos extends Model
         'valor_servicio',
         'valor_total',
         'cantidad',
-        'estado_id'
+        'estatus'
     ];
 
     /**
