@@ -33,7 +33,7 @@ class TipoHabitacionController extends Controller
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
             $TipoHabitacion = TipoHabitacion::paginate($limit);
         } else {
-            $TipoHabitacion = TipoHabitacion::all();
+            $TipoHabitacion = TipoHabitacion::join('estados', 'tipo_habitacion.estado_id', '=', 'estados.id')->get();
         }
 
         return response()->json([
@@ -103,6 +103,7 @@ class TipoHabitacionController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
+            $request['estado_id'] = 4;
             $TipoHabitacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
@@ -120,7 +121,7 @@ class TipoHabitacionController extends Controller
     {
         $TipoHabitacion = TipoHabitacion::findOrFail($id);
 
-        $TipoHabitacion->delete();
+        $TipoHabitacion->update(['estado_id' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

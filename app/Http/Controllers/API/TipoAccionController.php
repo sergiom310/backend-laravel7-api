@@ -31,7 +31,7 @@ class TipoAccionController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoAccion = TipoAccion::paginate($limit);
+            $TipoAccion = TipoAccion::where(['estado_id'])->paginate($limit);
         } else {
             $TipoAccion = TipoAccion::all();
         }
@@ -103,6 +103,7 @@ class TipoAccionController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
+            $request['estado_id'] = 4;
             $TipoAccion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
@@ -120,7 +121,7 @@ class TipoAccionController extends Controller
     {
         $TipoAccion = TipoAccion::findOrFail($id);
 
-        $TipoAccion->delete();
+        $TipoAccion->update(['estado_id' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
