@@ -44,6 +44,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'clientes'           => 'API\ClientesController',
     ]);
 
+    Route::put('reversetipohab/{id}', 'API\TipoHabitacionController@reversetipohab');
+
     Route::get('permission2', 'API\PermissionController@indexPermissions');
     Route::get('permissionsrole/{id}', 'API\RoleController@permissions');
     Route::get('permissionsmodel/{id}', 'API\PermissionController@permissionsmodel');

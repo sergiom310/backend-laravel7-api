@@ -31,9 +31,28 @@ class TipoHabitacionController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoHabitacion = TipoHabitacion::paginate($limit);
+            $TipoHabitacion = TipoHabitacion::select(
+                'tipo_habitacion.id',
+                'des_tipo_habitacion',
+                'tipo_habitacion.created_at',
+                'tipo_habitacion.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_habitacion.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_habitacion.estatus', [1, 5])
+            ->paginate($limit);
+
+            $TipoHabitacion = $TipoHabitacion->toArray();
+            $TipoHabitacion = $TipoHabitacion['data'];
         } else {
-            $TipoHabitacion = TipoHabitacion::join('estados', 'tipo_habitacion.estatus', '=', 'estados.id')->get();
+            $TipoHabitacion = TipoHabitacion::select(
+                'tipo_habitacion.id',
+                'des_tipo_habitacion',
+                'tipo_habitacion.created_at',
+                'tipo_habitacion.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_habitacion.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_habitacion.estatus', [1, 5])
+            ->get();
         }
 
         return response()->json([
@@ -109,6 +128,23 @@ class TipoHabitacionController extends Controller
         }
 
         return response()->json(['error' => 'Error actualizando BD!'], 422);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversetipohab(Request $request, $id)
+    {
+        $TipoHabitacion = TipoHabitacion::findOrFail($id);
+
+        $TipoHabitacion->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
     }
 
     /**
