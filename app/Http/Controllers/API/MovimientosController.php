@@ -111,4 +111,19 @@ class MovimientosController extends Controller
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $Movimientos = Movimientos::findOrFail($id);
+
+        $Movimientos->delete();
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
 }

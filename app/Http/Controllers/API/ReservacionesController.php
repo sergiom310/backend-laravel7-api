@@ -97,7 +97,7 @@ class ReservacionesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * mark the specified resource as deleted.
      *
      * @param  \App\Models\Reservaciones  $Reservaciones
      * @return \Illuminate\Http\Response
@@ -107,6 +107,21 @@ class ReservacionesController extends Controller
         $response = Reservaciones::findOrFail($id);
 
         $response->delete();
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $Reservaciones = Reservaciones::findOrFail($id);
+
+        $Reservaciones->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

@@ -31,9 +31,30 @@ class TipoIdentificacionController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoIdentificacion = TipoIdentificacion::paginate($limit);
+            $TipoIdentificacion = TipoIdentificacion::select(
+                'tipo_identificacion.id',
+                'tipo_identificacion',
+                'des_tipo_identificacion',
+                'tipo_identificacion.created_at',
+                'tipo_identificacion.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_identificacion.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_identificacion.estatus', [1, 5])
+            ->paginate($limit);
+
+            $TipoHabitacion = $TipoHabitacion->toArray();
+            $TipoHabitacion = $TipoHabitacion['data'];
         } else {
-            $TipoIdentificacion = TipoIdentificacion::all();
+            $TipoIdentificacion = TipoIdentificacion::select(
+                'tipo_identificacion.id',
+                'tipo_identificacion',
+                'des_tipo_identificacion',
+                'tipo_identificacion.created_at',
+                'tipo_identificacion.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_identificacion.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_identificacion.estatus', [1, 5])
+            ->get();
         }
 
         return response()->json([
@@ -117,12 +138,44 @@ class TipoIdentificacionController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversetipoiden(Request $request, $id)
+    {
+        $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
+
+        $TipoIdentificacion->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
+    }
+
+    /**
+     * mark the specified resource as deleted.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
+
+        $TipoIdentificacion->update(['estatus' => 5]);
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
     {
         $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
 

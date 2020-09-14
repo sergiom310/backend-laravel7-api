@@ -99,7 +99,7 @@ class TurnosTrabajosController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * mark the specified resource as deleted.
      *
      * @param  \App\Models\TurnosTrabajos  $turnosTrabajos
      * @return \Illuminate\Http\Response
@@ -109,6 +109,21 @@ class TurnosTrabajosController extends Controller
         $response = TurnosTrabajos::findOrFail($id);
 
         $response->delete();
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $TurnosTrabajos = TurnosTrabajos::findOrFail($id);
+
+        $TurnosTrabajos->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }

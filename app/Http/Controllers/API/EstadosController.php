@@ -111,12 +111,27 @@ class EstadosController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * mark the specified resource as deleted.
      *
      * @param  \App\Models\TipoServicio  $tipoServicio
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+    {
+        $Estados = Estados::findOrFail($id);
+
+        $Estados->delete();
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
     {
         $Estados = Estados::findOrFail($id);
 

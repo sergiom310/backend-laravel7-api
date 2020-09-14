@@ -134,6 +134,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'user' => $user,
+            'ttl' =>  auth('api')->factory()->getTTL(),
             'permission' => $permisos,
             'roleuser' => ['id' => $role->role_id,'role' => $role->name],
             'token_type' => 'bearer',

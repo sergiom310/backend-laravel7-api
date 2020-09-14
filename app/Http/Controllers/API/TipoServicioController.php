@@ -31,9 +31,28 @@ class TipoServicioController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $TipoServicio = TipoServicio::paginate($limit);
+            $TipoServicio = TipoServicio::select(
+                'tipo_servicio.id',
+                'des_tipo_servicio',
+                'tipo_servicio.created_at',
+                'tipo_servicio.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_servicio.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_servicio.estatus', [1, 5])
+            ->paginate($limit);
+
+            $TipoServicio = $TipoServicio->toArray();
+            $TipoServicio = $TipoServicio['data'];
         } else {
-            $TipoServicio = TipoServicio::all();
+            $TipoServicio = TipoServicio::select(
+                'tipo_servicio.id',
+                'des_tipo_servicio',
+                'tipo_servicio.created_at',
+                'tipo_servicio.estatus',
+                'nom_estado')
+            ->join('estados', 'tipo_servicio.estatus', '=', 'estados.id')
+            ->whereNotIn('tipo_servicio.estatus', [1, 5])
+            ->get();
         }
 
         return response()->json([
@@ -76,10 +95,10 @@ class TipoServicioController extends Controller
      */
     public function show($id)
     {
-        $TipoDefinicion = TipoServicio::whereId($id)->get();
+        $TipoServicio = TipoServicio::whereId($id)->get();
 
         return response()->json([
-            "data" => $TipoDefinicion
+            "data" => $TipoServicio
         ], 200);
     }
 
@@ -92,7 +111,7 @@ class TipoServicioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoServicio = TipoServicio::findOrFail($id);
         $messages = [
             'required' => 'La descripción del tipo de servicio es requerida.',
             'max'      => 'La descripción del tipo de servicio debe ser máximo 50 caracteres.'
@@ -102,7 +121,8 @@ class TipoServicioController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
-            $TipoDefinicion->update($request->all());
+            $request['estatus'] = 4;
+            $TipoServicio->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
@@ -110,16 +130,48 @@ class TipoServicioController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversetiposerv(Request $request, $id)
+    {
+        $TipoServicio = TipoServicio::findOrFail($id);
+
+        $TipoServicio->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
+    }
+
+    /**
+     * mark the specified resource as deleted.
      *
      * @param  \App\Models\TipoServicio  $tipoServicio
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $TipoDefinicion = TipoServicio::findOrFail($id);
+        $TipoServicio = TipoServicio::findOrFail($id);
 
-        $TipoDefinicion->delete();
+        $TipoServicio->update(['estatus' => 5]);
+
+        return response()->json(['success' => 'Registro eliminado'], 201);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+        $TipoServicio = TipoServicio::findOrFail($id);
+
+        $TipoServicio->delete();
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
