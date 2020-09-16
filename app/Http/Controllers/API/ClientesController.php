@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Clientes;
 use Illuminate\Http\Request;
 use App\Http\Requests\API\ClientesRequest;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 
 class ClientesController extends Controller
 {
@@ -97,6 +99,23 @@ class ClientesController extends Controller
     }
 
     /**
+     * Reverse the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversecliente(Request $request, $id)
+    {
+        $Clientes = Clientes::findOrFail($id);
+
+        $Clientes->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
+    }
+
+    /**
      * mark the specified resource as deleted.
      *
      * @param  \App\Models\TipoServicio  $tipoServicio
@@ -106,7 +125,19 @@ class ClientesController extends Controller
     {
         $Clientes = Clientes::findOrFail($id);
 
-        $Clientes->delete();
+        $obsBitacora = $Clientes->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'clientes',
+            'estado_id' => $Clientes->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
+        $Clientes->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
@@ -120,6 +151,18 @@ class ClientesController extends Controller
     public function delete($id)
     {
         $Clientes = Clientes::findOrFail($id);
+
+        $obsBitacora = $Clientes->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'clientes',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $Clientes->delete();
 

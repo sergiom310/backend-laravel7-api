@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipoHabitacion;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TipoHabitacionController extends Controller
@@ -157,6 +159,18 @@ class TipoHabitacionController extends Controller
     {
         $TipoHabitacion = TipoHabitacion::findOrFail($id);
 
+        $obsBitacora = $TipoHabitacion->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_habitacion',
+            'estado_id' => $TipoHabitacion->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
         $TipoHabitacion->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
@@ -171,6 +185,18 @@ class TipoHabitacionController extends Controller
     public function delete($id)
     {
         $TipoHabitacion = TipoHabitacion::findOrFail($id);
+
+        $obsBitacora = $TipoHabitacion->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_habitacion',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $TipoHabitacion->delete();
 

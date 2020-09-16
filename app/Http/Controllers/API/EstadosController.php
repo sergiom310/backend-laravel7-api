@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Estados;
 use Illuminate\Http\Request;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 
 class EstadosController extends Controller
 {
@@ -103,11 +105,29 @@ class EstadosController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
+            $request['estatus'] = 4;
             $Estados->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
 
         return response()->json(['error' => 'Error actualizando BD!'], 422);
+    }
+
+    /**
+     * Reverse the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reverseestado(Request $request, $id)
+    {
+        $Estados = Estados::findOrFail($id);
+
+        $Estados->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
     }
 
     /**
@@ -120,7 +140,19 @@ class EstadosController extends Controller
     {
         $Estados = Estados::findOrFail($id);
 
-        $Estados->delete();
+        $obsBitacora = $Estados->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'estados',
+            'estado_id' => $Estados->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
+        $Estados->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
@@ -134,6 +166,18 @@ class EstadosController extends Controller
     public function delete($id)
     {
         $Estados = Estados::findOrFail($id);
+
+        $obsBitacora = $Estados->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'estados',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $Estados->delete();
 

@@ -44,11 +44,35 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         'clientes'           => 'API\ClientesController',
     ]);
 
+    // * rutas para reversar el borrado lógico *
     Route::put('reversetipohab/{id}', 'API\TipoHabitacionController@reversetipohab');
     Route::put('reversetipodoc/{id}', 'API\TipoDocumentoController@reversetipodoc');
     Route::put('reversetipoiden/{id}', 'API\TipoIdentificacionController@reversetipoiden');
     Route::put('reversetiposerv/{id}', 'API\TipoServicioController@reversetiposerv');
+    Route::put('reverseturnotrab/{id}', 'API\TurnosTrabajosController@reverseturnotrab');
+    Route::put('reverseservicio/{id}', 'API\ServiciosController@reverseservicio');
+    Route::put('reversereserva/{id}', 'API\ReservacionesController@reversereserva');
+    Route::put('reversemovimien/{id}', 'API\MovimientosController@reversemovimien');
+    Route::put('reversehabitacion/{id}', 'API\HabitacionesController@reversehabitacion');
+    Route::put('reverseestado/{id}', 'API\EstadosController@reverseestado');
+    Route::put('reversedocumento/{id}', 'API\DocumentosController@reversedocumento');
+    Route::put('reversecliente/{id}', 'API\ClientesController@reversecliente');
 
+    // * rutas para el borrado físico *
+    Route::put('deletetipohab/{id}', 'API\TipoHabitacionController@delete');
+    Route::put('deletetipodoc/{id}', 'API\TipoDocumentoController@delete');
+    Route::put('deletetipoiden/{id}', 'API\TipoIdentificacionController@delete');
+    Route::put('deletetiposerv/{id}', 'API\TipoServicioController@delete');
+    Route::put('deleteturnostrab/{id}', 'API\TurnosTrabajosController@delete');
+    Route::put('deleteservicio/{id}', 'API\ServiciosController@delete');
+    Route::put('deletereserva/{id}', 'API\ReservacionesController@delete');
+    Route::put('deletemovimien/{id}', 'API\MovimientosController@delete');
+    Route::put('deletehabitacion/{id}', 'API\HabitacionesController@delete');
+    Route::put('deleteestado/{id}', 'API\EstadosController@delete');
+    Route::put('deletedocumento/{id}', 'API\DocumentosController@delete');
+    Route::put('deletecliente/{id}', 'API\ClientesController@delete');
+
+    // * rutas módulo de roles y permisos *
     Route::get('permission2', 'API\PermissionController@indexPermissions');
     Route::get('permissionsrole/{id}', 'API\RoleController@permissions');
     Route::get('permissionsmodel/{id}', 'API\PermissionController@permissionsmodel');

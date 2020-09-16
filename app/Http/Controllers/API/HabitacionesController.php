@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Habitaciones;
 use Illuminate\Http\Request;
 use App\Http\Requests\API\HabitacionesRequest;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 
 class HabitacionesController extends Controller
 {
@@ -88,12 +90,30 @@ class HabitacionesController extends Controller
         $response = Habitaciones::findOrFail($id);
 
         try {
+            $request['estatus'] = 4;
             $response->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }
 
         return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
+    }
+
+    /**
+     * Reverse the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversehabitacion(Request $request, $id)
+    {
+        $Habitaciones = Habitaciones::findOrFail($id);
+
+        $Habitaciones->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
     }
 
     /**
@@ -106,7 +126,19 @@ class HabitacionesController extends Controller
     {
         $Habitaciones = Habitaciones::findOrFail($id);
 
-        $Habitaciones->delete();
+        $obsBitacora = $Habitaciones->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'habitaciones',
+            'estado_id' => $Habitaciones->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
+        $Habitaciones->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
@@ -120,6 +152,18 @@ class HabitacionesController extends Controller
     public function delete($id)
     {
         $Habitaciones = Habitaciones::findOrFail($id);
+
+        $obsBitacora = $Habitaciones->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'habitaciones',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $Habitaciones->delete();
 

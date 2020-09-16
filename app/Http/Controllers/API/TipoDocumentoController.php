@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipoDocumento;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TipoDocumentoController extends Controller
@@ -158,6 +160,18 @@ class TipoDocumentoController extends Controller
     {
         $TipoDocumento = TipoDocumento::findOrFail($id);
 
+        $obsBitacora = $TipoDocumento->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_documento',
+            'estado_id' => $TipoDocumento->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
         $TipoDocumento->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
@@ -172,6 +186,18 @@ class TipoDocumentoController extends Controller
     public function delete($id)
     {
         $TipoDocumento = TipoDocumento::findOrFail($id);
+
+        $obsBitacora = $TipoDocumento->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_documento',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $TipoDocumento->delete();
 

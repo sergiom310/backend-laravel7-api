@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipoIdentificacion;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TipoIdentificacionController extends Controller
@@ -130,6 +132,7 @@ class TipoIdentificacionController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
+            $request['estatus'] = 4;
             $TipoIdentificacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
@@ -164,6 +167,18 @@ class TipoIdentificacionController extends Controller
     {
         $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
 
+        $obsBitacora = $TipoIdentificacion->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_identificacion',
+            'estado_id' => $TipoIdentificacion->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
         $TipoIdentificacion->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
@@ -178,6 +193,18 @@ class TipoIdentificacionController extends Controller
     public function delete($id)
     {
         $TipoIdentificacion = TipoIdentificacion::findOrFail($id);
+
+        $obsBitacora = $TipoIdentificacion->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'tipo_identificacion',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $TipoIdentificacion->delete();
 

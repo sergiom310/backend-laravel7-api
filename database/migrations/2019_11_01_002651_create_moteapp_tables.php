@@ -148,6 +148,8 @@ class CreateMoteappTables extends Migration
             $table->unsignedSmallInteger('estatus');
             $table->foreign('estatus')->references('id')->on('estados');
             $table->integer('tabla_id');
+            $table->unsignedSmallInteger('estatus_id');
+            $table->foreign('estatus_id')->references('id')->on('estados');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('nom_tabla', 50);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Movimientos;
 use Illuminate\Http\Request;
 use App\Http\Requests\API\MovimientosRequest;
+use App\Models\Bitacora;
 use Carbon\Carbon;
 
 class MovimientosController extends Controller
@@ -89,6 +90,7 @@ class MovimientosController extends Controller
         $response = Movimientos::findOrFail($id);
 
         try {
+            $request['estatus'] = 4;
             $response->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
@@ -98,6 +100,24 @@ class MovimientosController extends Controller
     }
 
     /**
+     * Reverse the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reversemovimien(Request $request, $id)
+    {
+        $Movimientos = Movimientos::findOrFail($id);
+
+        $Movimientos->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
+    }
+
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Movimientos  $movimientos
@@ -105,9 +125,21 @@ class MovimientosController extends Controller
      */
     public function destroy($id)
     {
-        $response = Movimientos::findOrFail($id);
+        $Movimientos = Movimientos::findOrFail($id);
 
-        $response->delete();
+        $obsBitacora = $Movimientos->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'movimientos',
+            'estado_id' => $Movimientos->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
+        $Movimientos->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
@@ -121,6 +153,18 @@ class MovimientosController extends Controller
     public function delete($id)
     {
         $Movimientos = Movimientos::findOrFail($id);
+
+        $obsBitacora = $Movimientos->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'movimientos',
+            'estado_id' => 13,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $Movimientos->delete();
 

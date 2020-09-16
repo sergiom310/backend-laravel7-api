@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Servicios;
 use Illuminate\Http\Request;
 use App\Http\Requests\API\ServiciosRequest;
+use App\Models\Bitacora;
+use Carbon\Carbon;
 
 class ServiciosController extends Controller
 {
@@ -88,12 +90,30 @@ class ServiciosController extends Controller
         $response = Servicios::findOrFail($id);
 
         try {
+            $request['estatus'] = 4;
             $response->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }
 
         return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
+    }
+
+    /**
+     * Reverse the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reverseservicio(Request $request, $id)
+    {
+        $Servicios = Servicios::findOrFail($id);
+
+        $Servicios->update(['estatus' => 2]);
+
+        return response()->json(['success' => 'Registro restaurado exitosamente'], 201);
+
     }
 
     /**
@@ -106,7 +126,19 @@ class ServiciosController extends Controller
     {
         $Servicios = Servicios::findOrFail($id);
 
-        $Servicios->delete();
+        $obsBitacora = $Servicios->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'servicios',
+            'estatus_id' => $Servicios->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
+
+        $Servicios->update(['estatus' => 5]);
 
         return response()->json(['success' => 'Registro eliminado'], 201);
     }
@@ -120,6 +152,18 @@ class ServiciosController extends Controller
     public function delete($id)
     {
         $Servicios = Servicios::findOrFail($id);
+
+        $obsBitacora = $Servicios->toJson();
+
+        $Bitacora = Bitacora::create([
+            'tabla_id' => $id,
+            'user_id' => \Auth::user()->id,
+            'nom_tabla' => 'servicios',
+            'estatus_id' => $Servicios->estatus,
+            'estatus' => 2,
+            'created_at' => Carbon::now(),
+            'obs_bitacora' => $obsBitacora
+        ]);
 
         $Servicios->delete();
 
