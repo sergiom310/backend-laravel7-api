@@ -87,11 +87,22 @@ class ReservacionesController extends Controller
      */
     public function update(ReservacionesRequest $request, $id)
     {
-        $response = Reservaciones::findOrFail($id);
+        $Reservaciones = Reservaciones::findOrFail($id);
 
         try {
-            $request['estatus'] = 4;
-            $response->update($request->all());
+            $obsBitacora = $Reservaciones->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'reservaciones',
+                'estado_id' => $Reservaciones->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
+            $Reservaciones->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }

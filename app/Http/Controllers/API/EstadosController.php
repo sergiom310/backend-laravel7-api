@@ -105,7 +105,18 @@ class EstadosController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
-            $request['estatus'] = 4;
+            $obsBitacora = $Estados->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'estados',
+                'estado_id' => $Estados->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
             $Estados->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }

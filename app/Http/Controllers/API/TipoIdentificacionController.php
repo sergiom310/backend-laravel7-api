@@ -132,7 +132,18 @@ class TipoIdentificacionController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
-            $request['estatus'] = 4;
+            $obsBitacora = $TipoIdentificacion->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'tipo_identificacion',
+                'estado_id' => $TipoIdentificacion->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
             $TipoIdentificacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }

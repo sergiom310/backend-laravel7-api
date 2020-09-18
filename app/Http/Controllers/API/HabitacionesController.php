@@ -87,11 +87,22 @@ class HabitacionesController extends Controller
      */
     public function update(HabitacionesRequest $request, $id)
     {
-        $response = Habitaciones::findOrFail($id);
+        $Habitaciones = Habitaciones::findOrFail($id);
 
         try {
-            $request['estatus'] = 4;
-            $response->update($request->all());
+            $obsBitacora = $Habitaciones->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'habitaciones',
+                'estado_id' => $Habitaciones->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
+            $Habitaciones->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }

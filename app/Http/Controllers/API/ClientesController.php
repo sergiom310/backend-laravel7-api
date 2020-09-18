@@ -87,10 +87,22 @@ class ClientesController extends Controller
      */
     public function update(ClientesRequest $request, $id)
     {
-        $response = Clientes::findOrFail($id);
+        $Clientes = Clientes::findOrFail($id);
 
         try {
-            $response->update($request->all());
+            $obsBitacora = $Documentos->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'clientes',
+                'estado_id' => $Documentos->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
+            $Clientes->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }

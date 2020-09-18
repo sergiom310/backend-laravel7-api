@@ -88,12 +88,23 @@ class DocumentosController extends Controller
      */
     public function update(DocumentosRequest $request, $id)
     {
-        $response = Documentos::findOrFail($id);
+        $Documentos = Documentos::findOrFail($id);
 
         try {
+            $obsBitacora = $Documentos->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'documentos',
+                'estado_id' => $Documentos->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
             $request['user_id_updated_at'] = \Auth::id();
-            $request['estatus'] = 4;
-            $response->update($request->all());
+            $Documentos->update($request->all());
         } catch (\Exception $exception) {
             return response()->json(['error' => 'Error actualizando BD!'], 422);
         }

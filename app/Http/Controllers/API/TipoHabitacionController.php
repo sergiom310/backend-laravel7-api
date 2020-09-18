@@ -124,7 +124,18 @@ class TipoHabitacionController extends Controller
         ], $messages);
 
         if ($validator->passes()) {
-            $request['estatus'] = 4;
+            $obsBitacora = $TipoHabitacion->toJson();
+
+            $Bitacora = Bitacora::create([
+                'tabla_id' => $id,
+                'user_id' => \Auth::user()->id,
+                'nom_tabla' => 'tipo_habitacion',
+                'estado_id' => $TipoHabitacion->estatus,
+                'estatus' => 4,
+                'created_at' => Carbon::now(),
+                'obs_bitacora' => $obsBitacora
+            ]);
+
             $TipoHabitacion->update($request->all());
             return response()->json(['success' => 'Registro actualizado exitosamente'], 201);
         }
