@@ -161,6 +161,31 @@ class TipoHabitacionController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function selectTipoHabitacion(Request $request)
+    {
+        $TipoHabitacion = TipoHabitacion::select(
+            'tipo_habitacion.id AS value',
+            'des_tipo_habitacion AS label'
+        )
+        ->join('estados', 'tipo_habitacion.estatus', '=', 'estados.id')
+        ->whereNotIn('tipo_habitacion.estatus', [1, 5])
+        ->get()
+        ;
+
+        \Log::debug($TipoHabitacion);
+
+        return response()->json([
+            "data" => $TipoHabitacion
+        ], 200);
+    }
+
+    /**
      * mark the specified resource as deleted.
      *
      * @param  int  $id

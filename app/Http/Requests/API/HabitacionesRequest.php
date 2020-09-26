@@ -28,9 +28,9 @@ class HabitacionesRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom_habitacion'     => 'required|max:50',
-            'estado_id'          => 'required|numeric|exists:estados,id',
-            'tipo_habitacion_id' => 'required|numeric|exists:tipo_habitacion,id'
+            'nom_habitacion'              => 'required|max:50',
+            'estatus'                     => 'required|numeric|exists:estados,id',
+            'tipo_habitacion_id'          => 'required|numeric|exists:tipo_habitacion,id'
         ];
     }
 
@@ -44,9 +44,9 @@ class HabitacionesRequest extends FormRequest
         return [
             'nom_habitacion.required'     => ':attribute es requerida.',
             'nom_habitacion.max'          => ':attribute debe ser de máximo 50 carácteres.',
-            'estado_id.required'          => ':attribute es requerida.',
-            'estado_id.numeric'           => ':attribute debe ser númerico.',
-            'estado_id.exists'            => ':attribute seleccionado no existe.',
+            'estatus.required'            => ':attribute es requerida.',
+            'estatus.numeric'             => ':attribute debe ser númerico.',
+            'estatus.exists'              => ':attribute seleccionado no existe.',
             'tipo_habitacion_id.required' => ':attribute es requerida.',
             'tipo_habitacion_id.numeric'  => ':attribute debe ser númerico.',
             'tipo_habitacion_id.exists'   => ':attribute seleccionado no existe.',

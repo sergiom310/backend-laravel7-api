@@ -34,9 +34,35 @@ class HabitacionesController extends Controller
     {
         if ($page = \Request::get('page')) {
             $limit = \Request::get('limit') ? \Request::get('limit') : 20;
-            $Habitaciones = Habitaciones::paginate($limit);
+            $Habitaciones = Habitaciones::select(
+                'habitaciones.id',
+                'tipo_habitacion_id',
+                'tipo_habitacion.des_tipo_habitacion',
+                'nom_habitacion',
+                'habitaciones.created_at',
+                'habitaciones.estatus',
+                'nom_estado'
+            )
+            ->join('tipo_habitacion', 'tipo_habitacion.id', '=', 'habitaciones.tipo_habitacion_id')
+            ->join('estados', 'habitaciones.estatus', '=', 'estados.id')
+            ->whereNotIn('habitaciones.estatus', [1, 5])
+            ->paginate($limit);
+
+            $Habitaciones = $Habitaciones->toArray();
+            $Habitaciones = $Habitaciones['data'];
         } else {
-            $Habitaciones = Habitaciones::all();
+            $Habitaciones = Habitaciones::select(
+                'habitaciones.id',
+                'tipo_habitacion.des_tipo_habitacion',
+                'tipo_habitacion_id',
+                'nom_habitacion',
+                'habitaciones.created_at',
+                'habitaciones.estatus',
+                'nom_estado')
+            ->join('tipo_habitacion', 'tipo_habitacion.id', '=', 'habitaciones.tipo_habitacion_id')
+            ->join('estados', 'habitaciones.estatus', '=', 'estados.id')
+            ->whereNotIn('habitaciones.estatus', [1, 5])
+            ->get();
         }
 
         return response()->json([
@@ -135,7 +161,9 @@ class HabitacionesController extends Controller
      */
     public function destroy($id)
     {
+        \Log::debug($id);
         $Habitaciones = Habitaciones::findOrFail($id);
+        \Log::debug($Habitaciones);
 
         $obsBitacora = $Habitaciones->toJson();
 

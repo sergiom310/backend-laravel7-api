@@ -45,6 +45,9 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     ]);
 
     // * rutas para reversar el borrado lógico *
+    Route::get('selectTipoHabitacion', 'API\TipoHabitacionController@selectTipoHabitacion');
+
+    // * rutas para reversar el borrado lógico *
     Route::put('reversetipohab/{id}', 'API\TipoHabitacionController@reversetipohab');
     Route::put('reversetipodoc/{id}', 'API\TipoDocumentoController@reversetipodoc');
     Route::put('reversetipoiden/{id}', 'API\TipoIdentificacionController@reversetipoiden');
