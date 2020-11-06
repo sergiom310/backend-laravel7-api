@@ -39,7 +39,7 @@ class PermissionController extends Controller
     {
         $this->middleware('permission:system.index');
         $query = "
-        SELECT modulo,MAX(consultar) AS consultar,MAX(modificar) AS modificar,MAX(incluir) AS incluir,MAX(eliminar) AS eliminar 
+        SELECT modulo,MAX(consultar) AS consultar,MAX(modificar) AS modificar,MAX(incluir) AS incluir,MAX(eliminar) AS eliminar,MAX(archivar) AS archivar 
         FROM 
         (
             SELECT 
@@ -47,7 +47,8 @@ class PermissionController extends Controller
                 CASE WHEN t0.permiso = 'index' THEN t0.id ELSE '' END AS consultar,
                 CASE WHEN t0.permiso = 'update' THEN t0.id ELSE '' END AS modificar,
                 CASE WHEN t0.permiso = 'create' THEN t0.id ELSE '' END AS incluir,
-                CASE WHEN t0.permiso = 'destroy' THEN t0.id ELSE '' END AS eliminar
+                CASE WHEN t0.permiso = 'destroy' THEN t0.id ELSE '' END AS eliminar,
+                CASE WHEN t0.permiso = 'store' THEN t0.id ELSE '' END AS archivar
             FROM 
             (
                 SELECT p.id,rp.permission_id,SUBSTRING(p.name, 1, POSITION('.' IN p.name) - 1) AS modulo,SUBSTRING(p.name, POSITION('.' IN p.name) + 1) AS permiso 

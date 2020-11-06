@@ -47,6 +47,13 @@ class PermissionsTableSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
+            'name' => "system.store",
+            'guard_name' => 'api',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        DB::table('permissions')->insert([
             'name' => "admin.index",
             'guard_name' => 'api',
             'created_at' => Carbon::now(),
@@ -69,6 +76,13 @@ class PermissionsTableSeeder extends Seeder
 
         DB::table('permissions')->insert([
             'name' => "admin.destroy",
+            'guard_name' => 'api',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        DB::table('permissions')->insert([
+            'name' => "admin.store",
             'guard_name' => 'api',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -102,6 +116,13 @@ class PermissionsTableSeeder extends Seeder
             'updated_at' => Carbon::now()
         ]);
 
+        DB::table('permissions')->insert([
+            'name' => "usuario.store",
+            'guard_name' => 'api',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
         // * ahora le asignamos todos los permisos al role system *
         $role = Role::find(1);
         $role->givePermissionTo(Permission::all());
@@ -127,10 +148,10 @@ class PermissionsTableSeeder extends Seeder
 
         // * permisos de módulo admin *
         $role = Role::find(2);
-        $role->syncPermissions([5,6,7,8,9,10,11,12]);
+        $role->syncPermissions([6,7,8,9,10,11,12,13,14,15]);
 
         // * permisos de módulo usuario *
         $role = Role::find(3);
-        $role->syncPermissions([9,10,11,12]);
+        $role->syncPermissions([11,12,13,14,15]);
     }
 }

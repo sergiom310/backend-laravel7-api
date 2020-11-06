@@ -1,6 +1,6 @@
 # vue-laravel back-end API
 Laravel backend para proyectos web multi frontend
-Laravel framework versión 7
+Laravel framework versión 8
 
 Instalación:
 
